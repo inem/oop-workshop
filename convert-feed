@@ -1,0 +1,41 @@
+#!/usr/bin/ruby
+# option parser template: https://gist.github.com/rtomayko/1190547
+
+require "optparse"
+require 'open-uri'
+
+# convert-feed --out rss feed.xml
+# convert-feed --out atom https://ru.hexlet.io/lessons.rss
+
+# default options
+reverse = false
+sort    = false
+format  = "rss"
+limit   = false
+
+# parse arguments
+file = __FILE__
+ARGV.options do |opts|
+  opts.on("-r", "--reverse")            { reverse = true }
+  opts.on("-s", "--sort")               { sort = true }
+  opts.on("-o", "--out=format", String) { |val| format = val }
+  opts.on("-l", "--limit=val", Integer) { |val| limit = val }
+  # opts.on("--list=[x,y,z]", Array)    { |val| list = val }
+  opts.on_tail("-h", "--help")          { exec "grep ^#/<'#{file}'|cut -c4-" }
+  opts.parse!
+end
+
+source = ARGV.first
+
+
+
+# do your thing
+warn "format:   #{format.inspect}"
+warn "reverse:  #{reverse.inspect}"
+warn "limit:    #{limit.inspect}"
+warn "sort:     #{sort.inspect}"
+warn "source:   #{source}"
+
+raise "No source provided!" if !source
+
+content = open(source) {|f| f.read }
