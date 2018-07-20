@@ -6,6 +6,7 @@ require 'open-uri'
 require 'rss'
 
 require_relative 'lib/feed'
+require_relative 'lib/operations'
 
 # convert-feed --out rss feed.xml
 # convert-feed --out atom https://ru.hexlet.io/lessons.rss
@@ -30,7 +31,6 @@ end
 
 source = ARGV.first
 
-
 # do your thing
 warn "format:   #{format.inspect}"
 warn "reverse:  #{reverse.inspect}"
@@ -40,20 +40,35 @@ warn "source:   #{source}"
 
 raise "No source provided!" if !source
 
-feed_object = nil
+title = nil
+items = nil
 
 open(source) do |rss|
   feed = RSS::Parser.parse(rss)
-  feed_object = Feed.new(feed.channel.title, feed.items)
+
+  title = feed.channel.title
+  items = feed.items
+end
+
+if sort
+  items = Operations.sort(items)
+end
+
+if limit
+  items = Operations.limit(items, limit)
+end
+
+if reverse
+  items = Operations.reverse(items)
 end
 
 rss = RSS::Maker.make(format) do |maker|
   maker.channel.author = "convert-feed"
   maker.channel.updated = Time.now.to_s
-  maker.channel.title = feed_object.title
+  maker.channel.title = title
   maker.channel.id = "Id!"
 
-  feed_object.items.each do |item|
+  items.each do |item|
     maker.items.new_item do |new_item|
       new_item.title = item.title
       # new_item.guid = item.guid
@@ -65,3 +80,7 @@ rss = RSS::Maker.make(format) do |maker|
 end
 
 puts rss
+
+
+# Todo:
+# - [ ] Operations.sort завязан щас на pubDate - это прилетает из RSS. Not good
