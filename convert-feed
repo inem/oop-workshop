@@ -51,7 +51,7 @@ open(source) do |rss|
 end
 
 if sort
-  items = Operations.sort(items)
+  items = Operations.sort(items, ->(a,b){ a.pubDate <=> b.pubDate })
 end
 
 if limit

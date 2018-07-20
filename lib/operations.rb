@@ -7,7 +7,7 @@ module Operations
     items.reverse
   end
 
-  def self.sort(items)
-    items.sort{|a,b| a.pubDate <=> b.pubDate}
+  def self.sort(items, sort_method)
+    items.sort{|a,b| sort_method.call(a,b) }
   end
 end
