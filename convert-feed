@@ -3,6 +3,9 @@
 
 require "optparse"
 require 'open-uri'
+require 'rss'
+
+require_relative 'lib/feed'
 
 # convert-feed --out rss feed.xml
 # convert-feed --out atom https://ru.hexlet.io/lessons.rss
@@ -28,7 +31,6 @@ end
 source = ARGV.first
 
 
-
 # do your thing
 warn "format:   #{format.inspect}"
 warn "reverse:  #{reverse.inspect}"
@@ -38,4 +40,28 @@ warn "source:   #{source}"
 
 raise "No source provided!" if !source
 
-content = open(source) {|f| f.read }
+feed_object = nil
+
+open(source) do |rss|
+  feed = RSS::Parser.parse(rss)
+  feed_object = Feed.new(feed.channel.title, feed.items)
+end
+
+rss = RSS::Maker.make(format) do |maker|
+  maker.channel.author = "convert-feed"
+  maker.channel.updated = Time.now.to_s
+  maker.channel.title = feed_object.title
+  maker.channel.id = "Id!"
+
+  feed_object.items.each do |item|
+    maker.items.new_item do |new_item|
+      new_item.title = item.title
+      # new_item.guid = item.guid
+      new_item.description = item.description
+      new_item.pubDate = item.pubDate
+      new_item.link = item.link
+    end
+  end
+end
+
+puts rss
