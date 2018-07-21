@@ -1,3 +1,3 @@
 require "bundler/setup"
 require "minitest/autorun"
-require 'power_assert'
+require 'minitest/power_assert'

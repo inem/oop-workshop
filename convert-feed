@@ -28,4 +28,3 @@ puts output.inspect
 
 # TODO:
 #  - standard srcuture
-#  - power_assert
