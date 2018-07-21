@@ -44,7 +44,6 @@ class ConverterTest < Minitest::Test
     }
 
     output = Converter.new(options).convert("#{__dir__}/files/feed.rss")
-    puts output.inspect
-
+    output = Converter.new(options.merge(format: "atom")).convert("https://ru.hexlet.io/lessons.rss")
   end
 end

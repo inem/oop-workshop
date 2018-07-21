@@ -96,7 +96,7 @@ class AtomParser
       data.fetch("description"),
     )
     items = items_data.map{|el| ItemsHelper.create el }
-    items = ItemsHelper.strip_out_guids!(items) if options[:strip_ids]
+    items = ItemsHelper.strip_out_guids!(items) if @options[:strip_ids]
 
     Feed.new(info, items)
   end

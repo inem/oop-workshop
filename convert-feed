@@ -25,3 +25,7 @@ end
 
 output = Converter.new(options).convert(ARGV.first)
 puts output.inspect
+
+# TODO:
+#  - standard srcuture
+#  - power_assert
