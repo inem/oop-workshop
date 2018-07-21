@@ -1,20 +1,23 @@
 class Feed
-  attr_reader :title, :items
+  attr_reader :title, :author, :id, :about, :link, :description
 
-  def initialize(title, items)
-    @title = title
-    @items = items.each{|i| Item.new(i.title, i.description, i.pubDate, i.link) }
+  def self.new_from_channel(channel)
+    new(
+      channel.title,
+      channel.author,
+      channel.id,
+      channel.about,
+      channel.link,
+      channel.description
+    )
   end
 
-  def sort
-    Feed.new title, items.sort{|item| item.pubDate }
-  end
-
-  def reverse
-    Feed.new title, items.reverse
-  end
-
-  def limit(number)
-    Feed.new title, items[0...number]
+  def initialize(title, author, id, about, link, description)
+    @title = title || "title"
+    @author = author || "blank"
+    @id = id
+    @about = about || "about"
+    @link = link
+    @description = description || "desc"
   end
 end

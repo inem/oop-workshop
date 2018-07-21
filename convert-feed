@@ -2,85 +2,55 @@
 # option parser template: https://gist.github.com/rtomayko/1190547
 
 require "optparse"
-require 'open-uri'
-require 'rss'
 
+require_relative 'lib/converter'
 require_relative 'lib/feed'
 require_relative 'lib/operations'
+require_relative 'lib/atom_generator'
+require_relative 'lib/rss_generator'
 
 # convert-feed --out rss feed.xml
 # convert-feed --out atom https://ru.hexlet.io/lessons.rss
 
-# default options
-reverse = false
-sort    = false
-format  = "rss"
-limit   = false
+options = {}
 
 # parse arguments
 file = __FILE__
 ARGV.options do |opts|
-  opts.on("-r", "--reverse")            { reverse = true }
-  opts.on("-s", "--sort")               { sort = true }
-  opts.on("-o", "--out=format", String) { |val| format = val }
-  opts.on("-l", "--limit=val", Integer) { |val| limit = val }
-  # opts.on("--list=[x,y,z]", Array)    { |val| list = val }
+  opts.on("-r", "--reverse")            { options[:reverse] = true }
+  opts.on("-s", "--sort")               { options[:sort] = true }
+  opts.on("-o", "--out=format", String) { |val| options[:format] = val }
+  opts.on("-l", "--limit=val", Integer) { |val| options[:limit] = val }
   opts.on_tail("-h", "--help")          { exec "grep ^#/<'#{file}'|cut -c4-" }
   opts.parse!
 end
 
-source = ARGV.first
-
-# do your thing
-warn "format:   #{format.inspect}"
-warn "reverse:  #{reverse.inspect}"
-warn "limit:    #{limit.inspect}"
-warn "sort:     #{sort.inspect}"
-warn "source:   #{source}"
-
-raise "No source provided!" if !source
-
-title = nil
-items = nil
-
-open(source) do |rss|
-  feed = RSS::Parser.parse(rss)
-
-  title = feed.channel.title
-  items = feed.items
-end
-
-if sort
-  items = Operations.sort(items, ->(a,b){ a.pubDate <=> b.pubDate })
-end
-
-if limit
-  items = Operations.limit(items, limit)
-end
-
-if reverse
-  items = Operations.reverse(items)
-end
-
-rss = RSS::Maker.make(format) do |maker|
-  maker.channel.author = "convert-feed"
-  maker.channel.updated = Time.now.to_s
-  maker.channel.title = title
-  maker.channel.id = "Id!"
-
-  items.each do |item|
-    maker.items.new_item do |new_item|
-      new_item.title = item.title
-      # new_item.guid = item.guid
-      new_item.description = item.description
-      new_item.pubDate = item.pubDate
-      new_item.link = item.link
-    end
-  end
-end
-
-puts rss
+output = Converter.new(options).convert(ARGV.first)
+puts output
 
 
-# Todo:
-# - [ ] Operations.sort завязан щас на pubDate - это прилетает из RSS. Not good
+
+# title = nil
+# items = nil
+
+# raw_feed = RSS::Parser.parse(feed_content)
+# feed = Feed.new_from_channel(raw_feed.channel)
+# items = feed.items.each{ |item| Item.from_raw(item) }
+
+# if sort
+#   items = Operations.sort(items, ->(a,b){ a.date <=> b.date })
+# end
+
+# if limit
+#   items = Operations.limit(items, limit)
+# end
+
+# if reverse
+#   items = Operations.reverse(items)
+# end
+
+# generator_klass = format == "atom" ? AtomGenerator : RssGenerator
+
+# generator = generator_klass.new(feed, items)
+# rss = generator.generate!
+# puts rss
