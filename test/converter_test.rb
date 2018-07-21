@@ -21,11 +21,14 @@ class ConverterTest < Minitest::Test
 
   def test_reader_chooser
     assert ReaderChooser.choose("https://yandex.ru/feed.rss") == HttpReader
+    assert ReaderChooser.choose("http://yandex.ru/feed.rss") == HttpReader
     assert ReaderChooser.choose("file.xml") == FileReader
+    assert ReaderChooser.choose("httpfile.rss") == FileReader
   end
 
   def test_parser_chooser
     assert ParserChooser.choose("rss") == RssParser
     assert ParserChooser.choose("atom") == AtomParser
   end
+
 end

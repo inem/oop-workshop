@@ -4,10 +4,8 @@
 require "optparse"
 
 require_relative 'lib/converter'
-require_relative 'lib/feed'
+require_relative 'lib/entities'
 require_relative 'lib/operations'
-require_relative 'lib/atom_generator'
-require_relative 'lib/rss_generator'
 
 # convert-feed --out rss feed.xml
 # convert-feed --out atom https://ru.hexlet.io/lessons.rss
@@ -26,31 +24,4 @@ ARGV.options do |opts|
 end
 
 output = Converter.new(options).convert(ARGV.first)
-puts output
-
-
-
-# title = nil
-# items = nil
-
-# raw_feed = RSS::Parser.parse(feed_content)
-# feed = Feed.new_from_channel(raw_feed.channel)
-# items = feed.items.each{ |item| Item.from_raw(item) }
-
-# if sort
-#   items = Operations.sort(items, ->(a,b){ a.date <=> b.date })
-# end
-
-# if limit
-#   items = Operations.limit(items, limit)
-# end
-
-# if reverse
-#   items = Operations.reverse(items)
-# end
-
-# generator_klass = format == "atom" ? AtomGenerator : RssGenerator
-
-# generator = generator_klass.new(feed, items)
-# rss = generator.generate!
-# puts rss
+puts output.inspect
