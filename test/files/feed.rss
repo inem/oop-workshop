@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0">
+        <channel>
+
+                <title>1</title>
+                <description>2</description>
+                <link>https://ya.ru/</link>
+                <lastBuildDate>Sat, 13 Dec 2003 18:30:02 GMT</lastBuildDate>
+                <managingEditor>inem@bk.ru</managingEditor>
+
+                <item>
+                        <title>A1</title>
+                        <link>http://ya.ru/1</link>
+                        <guid isPermaLink="false">urn:uuid:1225c695-cfb8-4ebb-aaaa-80da344efa6a</guid>
+                        <pubDate>Sat, 1 Dec 2003 18:30:02 GMT</pubDate>
+                        <description>a1</description>
+                </item>
+
+                <item>
+                        <title>A2</title>
+                        <link>http://ya.ru/2</link>
+                        <guid isPermaLink="false">urn:uuid:1225c695-cfb8-4ebb-aaaa-80da344efa7a</guid>
+                        <pubDate>Sat, 2 Dec 2003 18:30:02 GMT</pubDate>
+                        <description>a2</description>
+                </item>
+
+                <item>
+                        <title>A3</title>
+                        <link>http://ya.ru/3</link>
+                        <guid isPermaLink="false">urn:uuid:1225c695-cfb8-4ebb-aaaa-80da344efa8a</guid>
+                        <pubDate>Sat, 3 Dec 2003 18:30:02 GMT</pubDate>
+                        <description>a4</description>
+                </item>
+
+                <item>
+                        <title>A4</title>
+                        <link>http://ya.ru/4</link>
+                        <guid isPermaLink="false">urn:uuid:1225c695-cfb8-4ebb-aaaa-80da344efa9a</guid>
+                        <pubDate>Sat, 4 Dec 2003 18:30:02 GMT</pubDate>
+                        <description>a4</description>
+                </item>
+        </channel>
+</rss>

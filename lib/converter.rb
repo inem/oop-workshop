@@ -30,9 +30,26 @@ module ParserChooser
   end
 end
 
+module ItemsHelper
+  def self.create(data)
+    Item.new(
+        item_data.fetch("title"),
+        item_data.fetch("description"),
+        item_data.fetch("pubDate"),
+        item_data.fetch("link"),
+        item_data.fetch("guid"),
+      )
+  end
+
+  def self.strip_out_guids(items)
+    items.each{|el| el.guid = nil}
+  end
+end
+
 class RssParser
-  def initialize(engine = Crack::XML)
+  def initialize(engine = Crack::XML, options)
     @engine = engine
+    @options = {strip_ids: false}.merge options
   end
 
   def parse(feed_content)
@@ -47,23 +64,23 @@ class RssParser
       data.fetch("link"),
       data.fetch("description"),
     )
-    items = items_data.each do |item_data|
-      Item.new(
-        item_data.fetch("title"),
-        item_data.fetch("description"),
-        item_data.fetch("pubDate"),
-        item_data.fetch("link"),
-        item_data.fetch("guid"),
-      )
-    end
+    items = items_data.map{|el| ItemHelper.create el }
+    items = ItemsHelper.strip_out_guids!(items) if options[:strip_ids]
 
     Feed.new(info, items)
+  end
+
+  private
+
+  def strip_ids!(items)
+    items.each{|el| el.guid = nil}
   end
 end
 
 class AtomParser
-  def initialize(engine = Crack::XML)
+  def initialize(engine = Crack::XML, options = {})
     @engine = engine
+    @options = {strip_ids: false}.merge options
   end
 
   def parse(feed_content)
@@ -78,19 +95,13 @@ class AtomParser
       data.fetch("link"),
       data.fetch("description"),
     )
-    items = items_data.each do |item_data|
-      Item.new(
-        item_data.fetch("title"),
-        item_data.fetch("description"),
-        item_data.fetch("pubDate"),
-        item_data.fetch("link"),
-        item_data.fetch("guid"),
-      )
-    end
+    items = items_data.map{|el| ItemHelper.create el }
+    items = ItemsHelper.strip_out_guids!(items) if options[:strip_ids]
 
     Feed.new(info, items)
   end
 end
+
 
 class Converter
   DEFAULTS = {

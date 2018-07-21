@@ -12,7 +12,7 @@ end
 class Item
   attr_reader :title, :description, :date, :link, :guid
 
-  def initialize(title, description, date, link, guid)
+  def initialize(title, description, date, link, guid = nil)
     @title, @description, @date, @link, @guid = title, description, date, link, guid
   end
 end
