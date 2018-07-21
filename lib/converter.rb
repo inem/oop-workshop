@@ -21,12 +21,16 @@ module HttpReader
 end
 
 module ParserChooser
+  def self.choose(content)
+    #FIXME: stupid lazy detector for now
+    regexp = Regexp.new('<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">')
+    content =~ regexp ? AtomParser : RssParser
+  end
+end
+
+module GeneratorChooser
   def self.choose(format)
-    variants = {
-      "rss" => RssParser,
-      "atom" => AtomParser
-    }
-    variants.fetch(format)
+    Object.const_get("#{format.capitalize}Generator")
   end
 end
 
@@ -102,7 +106,6 @@ class AtomParser
   end
 end
 
-
 class Converter
   DEFAULTS = {
     reverse: false,
@@ -118,8 +121,10 @@ class Converter
 
   def convert(source)
     feed_content = ReaderChooser.choose(source).read(source)
-    parser = ParserChooser.choose(options[:format]).new
+    parser = ParserChooser.choose(feed_content).new
 
-    raw_feed = parser.parse(feed_content)
+    feed = parser.parse(feed_content)
+    generator = GeneratorChooser.choose(options[:format]).new
+    generator.generate(feed)
   end
 end

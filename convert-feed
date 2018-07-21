@@ -5,7 +5,8 @@ require "optparse"
 
 require_relative 'lib/converter'
 require_relative 'lib/entities'
-require_relative 'lib/operations'
+# require_relative 'lib/operations'
+require_relative 'lib/generators'
 
 # convert-feed --out rss feed.xml
 # convert-feed --out atom https://ru.hexlet.io/lessons.rss
@@ -27,4 +28,6 @@ output = Converter.new(options).convert(ARGV.first)
 puts output.inspect
 
 # TODO:
-#  - standard srcuture
+#  - standard gem structure
+#  - get rid of classes Feed, Info, Item
+#  - meningful tests

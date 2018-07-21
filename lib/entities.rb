@@ -18,6 +18,7 @@ class Item
 end
 
 class Feed
+  attr_reader :info, :items
   def initialize(info, items)
     @info = info
     @items = items
