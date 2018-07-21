@@ -1,5 +1,8 @@
 require_relative 'test_helper'
+require_relative '../lib/entities'
 require_relative '../lib/converter'
+
+dir = File.expand_path File.dirname(__FILE__)
 
 class ConverterTest < Minitest::Test
   def test_initialize_with_no_options
@@ -31,4 +34,17 @@ class ConverterTest < Minitest::Test
     assert ParserChooser.choose("atom") == AtomParser
   end
 
+
+  def test_converter_file_rss
+    options = {
+      reverse: false,
+      sort: false,
+      format: "rss",
+      limit: false
+    }
+
+    output = Converter.new(options).convert("#{__dir__}/files/feed.rss")
+    puts output.inspect
+
+  end
 end

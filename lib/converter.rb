@@ -33,12 +33,12 @@ end
 module ItemsHelper
   def self.create(data)
     Item.new(
-        item_data.fetch("title"),
-        item_data.fetch("description"),
-        item_data.fetch("pubDate"),
-        item_data.fetch("link"),
-        item_data.fetch("guid"),
-      )
+      data.fetch("title"),
+      data.fetch("description"),
+      data.fetch("pubDate"),
+      data.fetch("link"),
+      data.fetch("guid"),
+    )
   end
 
   def self.strip_out_guids(items)
@@ -47,7 +47,7 @@ module ItemsHelper
 end
 
 class RssParser
-  def initialize(engine = Crack::XML, options)
+  def initialize(engine = Crack::XML, options = {})
     @engine = engine
     @options = {strip_ids: false}.merge options
   end
@@ -64,8 +64,8 @@ class RssParser
       data.fetch("link"),
       data.fetch("description"),
     )
-    items = items_data.map{|el| ItemHelper.create el }
-    items = ItemsHelper.strip_out_guids!(items) if options[:strip_ids]
+    items = items_data.map{|el| ItemsHelper.create el }
+    items = ItemsHelper.strip_out_guids!(items) if @options[:strip_ids]
 
     Feed.new(info, items)
   end
@@ -95,7 +95,7 @@ class AtomParser
       data.fetch("link"),
       data.fetch("description"),
     )
-    items = items_data.map{|el| ItemHelper.create el }
+    items = items_data.map{|el| ItemsHelper.create el }
     items = ItemsHelper.strip_out_guids!(items) if options[:strip_ids]
 
     Feed.new(info, items)
