@@ -35,7 +35,7 @@ class ConverterTest < Minitest::Test
   end
 
 
-  def test_converter_file_rss
+  def test_converter_runs_without_errors
     options = {
       reverse: false,
       sort: false,
