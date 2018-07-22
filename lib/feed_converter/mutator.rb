@@ -8,7 +8,7 @@ module FeedConverter
 
     MUTATIONS = {
       sort: -> (items, _){ items.sort{|a,b| a[:date] <=> b[:date] } },
-      reverse: -> (items){ items.reverse },
+      reverse: -> (items, _){ items.reverse },
       limit: -> (items, n){ items[0...n] }
     }
 
