@@ -7,6 +7,7 @@ require_relative '../lib/feed_converter'
 # convert-feed --out rss feed.xml
 # convert-feed --out atom https://ru.hexlet.io/lessons.rss
 
+format_options = {}
 options = {}
 
 # parse arguments
@@ -14,13 +15,13 @@ file = __FILE__
 ARGV.options do |opts|
   opts.on("-r", "--reverse")            { options[:reverse] = true }
   opts.on("-s", "--sort")               { options[:sort] = true }
-  opts.on("-o", "--out=format", String) { |val| options[:format] = val }
+  opts.on("-o", "--out=format", String) { |val| format_options[:format] = val }
   opts.on("-l", "--limit=val", Integer) { |val| options[:limit] = val }
   opts.on_tail("-h", "--help")          { exec "grep ^#/<'#{file}'|cut -c4-" }
   opts.parse!
 end
 
-output = FeedConverter::Converter.new(options).convert(ARGV.first)
+output = FeedConverter::Converter.new(format_options).convert(ARGV.first, options)
 puts output.inspect
 
 # TODO:

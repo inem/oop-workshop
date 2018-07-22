@@ -5,27 +5,27 @@ require 'open-uri'
 require_relative 'feed_converter/generator'
 require_relative 'feed_converter/parser'
 require_relative 'feed_converter/reader'
+require_relative 'feed_converter/mutator'
 
 module FeedConverter
   class Converter
     DEFAULTS = {
-      reverse: false,
-      sort: false,
-      format: "rss",
-      limit: false
+      format: "rss"
     }
 
     attr_reader :options
-    def initialize(options = {})
-      @options = DEFAULTS.merge(options)
+    def initialize(format_options = {})
+      @format_options = DEFAULTS.merge(format_options)
     end
 
-    def convert(source)
+    def convert(source, options = {})
       feed_content = Reader.choose(source).read(source)
       parser = Parser.choose(feed_content).new
 
       feed = parser.parse(feed_content)
-      generator = Generator.choose(options[:format]).new
+      feed[:items] = Mutator.new(options).mutate(feed[:items])
+
+      generator = Generator.choose(@format_options[:format]).new
       generator.generate(feed)
     end
   end
