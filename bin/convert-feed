@@ -14,7 +14,7 @@ options = {}
 file = __FILE__
 ARGV.options do |opts|
   opts.on("-r", "--reverse")            { options[:reverse] = true }
-  opts.on("-s", "--sort")               { options[:sort] = true }
+  opts.on("-s", "--sort=field")         { |val| options[:sort] = val }
   opts.on("-o", "--out=format", String) { |val| format_options[:format] = val }
   opts.on("-l", "--limit=val", Integer) { |val| options[:limit] = val }
   opts.on_tail("-h", "--help")          { exec "grep ^#/<'#{file}'|cut -c4-" }
@@ -23,6 +23,3 @@ end
 
 output = FeedConverter::Converter.new(format_options).convert(ARGV.first, options)
 puts output.inspect
-
-# TODO:
-#  - proper operations

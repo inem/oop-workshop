@@ -3,10 +3,15 @@ require 'date'
 module FeedConverter
   class SortMutator
     def initialize(options = {})
+      @field = options.fetch(:field, :date)
     end
 
     def mutate(items)
-      items.sort{|a, b| to_date(a[:date]) <=> to_date(b[:date]) }
+      if @field == :date
+        items.sort{|a, b| to_date(a[@field]) <=> to_date(b[@field]) }
+      else
+        items.sort{|a, b| a[@field] <=> b[@field] }
+      end
     end
 
     def to_date(a)

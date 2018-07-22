@@ -18,7 +18,11 @@ module FeedConverter
       items = list
 
       @options.each do |option, value|
-        if value
+        if option == :custom_mutators
+          value.each do |klass|
+            items = klass.new.mutate(items)
+          end
+        elsif value
           mutator_options = @options.select {|key,_| key == option }
           mutator = Object.const_get("FeedConverter::#{option.capitalize}Mutator").new(mutator_options)
           items = mutator.mutate(items)
@@ -27,8 +31,5 @@ module FeedConverter
 
       items
     end
-    private
-
-
   end
 end

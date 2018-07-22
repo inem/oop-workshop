@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>1</title>
+        <description>2</description>
+        <link>https://ya.ru/</link>
+        <webMaster>inem@bk.ru</webMaster>
+        <item>
+            <title>A1</title>
+            <description>a1</description>
+            <link>http://ya.ru/1</link>
+            <pubDate>Sat, 1 Dec 2003 18:30:02 GMT</pubDate>
+            <guid>urn:uuid:1225c695-cfb8-4ebb-aaaa-80da344efa6a</guid>
+        </item>
+    </channel>
+</rss>
