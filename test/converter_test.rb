@@ -1,20 +1,23 @@
 require_relative 'test_helper'
-require_relative '../lib/entities'
 require_relative '../lib/converter'
+require 'open-uri'
 
 dir = File.expand_path File.dirname(__FILE__)
 
 class ConverterTest < Minitest::Test
   def test_reader_chooser
-    assert { ReaderChooser.choose("https://yandex.ru/feed.rss") == HttpReader }
-    assert { ReaderChooser.choose("http://yandex.ru/feed.rss") == HttpReader }
-    assert { ReaderChooser.choose("file.xml") == FileReader }
-    assert { ReaderChooser.choose("httpfile.rss") == FileReader }
+    assert { Reader.choose("https://yandex.ru/feed.rss") == HttpReader }
+    assert { Reader.choose("http://yandex.ru/feed.rss") == HttpReader }
+    assert { Reader.choose("file.xml") == FileReader }
+    assert { Reader.choose("httpfile.rss") == FileReader }
   end
 
   def test_parser_chooser
-    assert { ParserChooser.choose("rss") == RssParser }
-    assert { ParserChooser.choose("atom") == AtomParser }
+    rss = IO.read("#{__dir__}/files/feed.rss")
+    atom = open("https://ru.hexlet.io/lessons.rss").read
+
+    assert { Parser.choose(rss) == RssParser }
+    assert { Parser.choose(atom) == AtomParser }
   end
 
   def test_converter_runs_without_errors

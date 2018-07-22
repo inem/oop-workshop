@@ -2,11 +2,7 @@
 # option parser template: https://gist.github.com/rtomayko/1190547
 
 require "optparse"
-
 require_relative 'lib/converter'
-require_relative 'lib/entities'
-# require_relative 'lib/operations'
-require_relative 'lib/generators'
 
 # convert-feed --out rss feed.xml
 # convert-feed --out atom https://ru.hexlet.io/lessons.rss
