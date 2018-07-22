@@ -2,7 +2,7 @@
 # option parser template: https://gist.github.com/rtomayko/1190547
 
 require "optparse"
-require_relative 'lib/converter'
+require_relative '../lib/feed_converter'
 
 # convert-feed --out rss feed.xml
 # convert-feed --out atom https://ru.hexlet.io/lessons.rss
@@ -20,8 +20,8 @@ ARGV.options do |opts|
   opts.parse!
 end
 
-output = Converter.new(options).convert(ARGV.first)
+output = FeedConverter::Converter.new(options).convert(ARGV.first)
 puts output.inspect
 
 # TODO:
-#  - standard gem structure
+#  - proper operations
