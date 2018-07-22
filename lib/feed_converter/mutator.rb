@@ -12,24 +12,26 @@ module FeedConverter
 
     def initialize(options)
       @options = DEFAULTS.merge(options)
+      @custom_mutators = @options.delete(:custom_mutators) || {}
     end
 
     def mutate(list)
       items = list
 
-      @options.each do |option, value|
-        if option == :custom_mutators
-          value.each do |klass|
-            items = klass.new.mutate(items)
-          end
-        elsif value
-          mutator_options = @options.select {|key,_| key == option }
-          mutator = Object.const_get("FeedConverter::#{option.capitalize}Mutator").new(mutator_options)
-          items = mutator.mutate(items)
-        end
+      mutators.each do |mutator, value|
+        items = mutator.new(value).mutate(items) if value
       end
-
       items
+    end
+
+    def mutators
+      @custom_mutators.merge internal_mutators
+    end
+
+    def internal_mutators
+      @options.map do |option, value|
+        [Object.const_get("FeedConverter::#{option.capitalize}Mutator"), value]
+      end.to_h
     end
   end
 end

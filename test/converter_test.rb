@@ -6,10 +6,11 @@ dir = File.expand_path File.dirname(__FILE__)
 
 class ShortMutator
   def initialize(options = {})
+    @val = options.fetch(:val, 0)
   end
 
   def mutate(items)
-    items[0..0]
+    items[0..@val]
   end
 end
 
@@ -33,7 +34,7 @@ class ConverterTest < Minitest::Test
     converter = FeedConverter::Converter.new(format: "atom")
     expected = IO.read("#{__dir__}/fixtures/output/feed_custom_mutator.rss.atom")
 
-    output = converter.convert("#{__dir__}/fixtures/feed.rss", sort: true, custom_mutators: [ShortMutator])
+    output = converter.convert("#{__dir__}/fixtures/feed.rss", sort: true, custom_mutators: {ShortMutator => {val: 0}})
     assert_xml(output, expected)
   end
 

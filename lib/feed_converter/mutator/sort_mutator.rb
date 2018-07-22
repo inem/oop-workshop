@@ -3,7 +3,7 @@ require 'date'
 module FeedConverter
   class SortMutator
     def initialize(options = {})
-      @field = options.fetch(:field, :date)
+      @field = options == true ? :date : options.fetch(:field, :date)
     end
 
     def mutate(items)
