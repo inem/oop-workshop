@@ -3,13 +3,13 @@ require_relative 'parser/rss_parser'
 
 module ItemsHelper
   def self.create(data)
-    Item.new(
-      data.fetch("title"),
-      data.fetch("description"),
-      data.fetch("pubDate"),
-      data.fetch("link"),
-      data.fetch("guid"),
-    )
+    {
+      title: data.fetch("title"),
+      description: data.fetch("description"),
+      date: data.fetch("pubDate"),
+      link: data.fetch("link"),
+      guid: data.fetch("guid"),
+    }
   end
 
   def self.strip_out_guids(items)

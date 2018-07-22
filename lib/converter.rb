@@ -2,7 +2,6 @@ require 'crack'
 require 'crack/xml'
 require 'open-uri'
 
-require_relative 'entities'
 require_relative 'generator'
 require_relative 'parser'
 require_relative 'reader'

@@ -25,5 +25,3 @@ puts output.inspect
 
 # TODO:
 #  - standard gem structure
-#  - get rid of classes Feed, Info, Item
-#  - meningful tests
