@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+    <channel>
+        <title>Новые уроки на Хекслете</title>
+        <description>Практические уроки по программированию</description>
+        <link>https://ru.hexlet.io/</link>
+        <managingEditor>info@hexlet.io</managingEditor>
+        <item>
+            <title>Ареалы проживания членистоногих. Конкурс по функциональному программированию 03.2015. / Главные испытания</title>
+            <description>Цель: Получить сатисфакцию</description>
+            <link>https://ru.hexlet.io/courses/main/lessons/functional-contest-03-2015/theory_unit</link>
+            <pubDate>Thu, 05 Mar 2015 14:56:47 +0000</pubDate>
+            <guid>205</guid>
+        </item>
+        <item>
+            <title>Pipeline challenge / Главные испытания</title>
+            <description>Цель: Написать клиент, реализующий передачу сообщений в условиях канала передачи с помехами.</description>
+            <link>https://ru.hexlet.io/courses/main/lessons/pipeline/theory_unit</link>
+            <pubDate>Wed, 21 Jan 2015 08:59:51 +0000</pubDate>
+            <guid>150</guid>
+        </item>
+    </channel>
+</rss>

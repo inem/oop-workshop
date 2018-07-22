@@ -1,34 +1,30 @@
 require_relative 'test_helper'
 require_relative '../lib/converter'
+require 'diffy'
 require 'open-uri'
 
 dir = File.expand_path File.dirname(__FILE__)
 
 class ConverterTest < Minitest::Test
-  def test_reader_chooser
-    assert { Reader.choose("https://yandex.ru/feed.rss") == HttpReader }
-    assert { Reader.choose("http://yandex.ru/feed.rss") == HttpReader }
-    assert { Reader.choose("file.xml") == FileReader }
-    assert { Reader.choose("httpfile.rss") == FileReader }
+  def test_converter_atom_to_rss_works_correctly
+    output = debeautify Converter.new(format: "rss").convert("#{__dir__}/fixtures/feed.atom")
+    expected = debeautify IO.read("#{__dir__}/fixtures/output/feed.atom.rss")
+
+    diff = Diffy::Diff.new(output, expected, :include_diff_info => true).to_s(:text)
+    puts diff if diff != ""
+    assert { diff == "" }
   end
 
-  def test_parser_chooser
-    rss = IO.read("#{__dir__}/files/feed.rss")
-    atom = open("https://ru.hexlet.io/lessons.rss").read
+  def test_converter_rss_to_atom_works_correctly
+    output =  debeautify Converter.new(format: "atom").convert("#{__dir__}/fixtures/feed.rss")
+    expected = debeautify IO.read("#{__dir__}/fixtures/output/feed.rss.atom")
 
-    assert { Parser.choose(rss) == RssParser }
-    assert { Parser.choose(atom) == AtomParser }
+    diff = Diffy::Diff.new(output, expected, :include_diff_info => true).to_s(:text)
+    puts diff if diff != ""
+    assert { diff == "" }
   end
 
-  def test_converter_runs_without_errors
-    options = {
-      reverse: false,
-      sort: false,
-      format: "rss",
-      limit: false
-    }
-
-    output = Converter.new(options).convert("#{__dir__}/files/feed.rss")
-    output = Converter.new(options.merge(format: "atom")).convert("https://ru.hexlet.io/lessons.rss")
+  def debeautify(xml)
+    xml.gsub(/>\s*</, ">\n<")
   end
 end

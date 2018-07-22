@@ -1,6 +1,6 @@
 class RssGenerator
   def initialize(builder = Builder::XmlMarkup)
-    @builder = builder.new
+    @builder = builder.new(indent: 4)
   end
 
   def generate(feed)
@@ -11,7 +11,7 @@ class RssGenerator
         b.description    feed.info.description
         b.link           feed.info.link
         b.managingEditor feed.info.author
-        b.lastBuildDate  Time.now
+        #b.lastBuildDate  Time.now
 
         feed.items.map{|item| generate_item(item, b) }
       end

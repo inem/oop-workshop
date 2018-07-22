@@ -1,6 +1,6 @@
 class AtomGenerator
   def initialize(builder = Builder::XmlMarkup)
-    @builder = builder.new
+    @builder = builder.new(indent: 4)
   end
 
   def generate(feed)

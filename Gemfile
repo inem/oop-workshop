@@ -6,4 +6,5 @@ gem 'builder'
 
 group :test do
   gem 'minitest-power_assert'
+  gem 'diffy'
 end
